@@ -14,4 +14,4 @@ $container['config'] = function () {
     'db_password' => 'wiggly',
   ];
 };
-var_dump(isset($container['config']));
+var_dump($container['config']);

@@ -14,17 +14,32 @@ class Container implements ArrayAccess
     public function offsetGet($offset)
     {
         // TODO: Implement offsetGet() method.
+        if (!$this->has($offset)) {
+            return null;
+        }
+
+        $item = $this->items[$offset]();
+
+        return $item;
     }
 
     public function offsetUnset($offset)
     {
         // TODO: Implement offsetUnset() method.
+        if ($this->has($offset)) {
+            unset($this->items[$offset]);
+        }
     }
 
     public function offsetExists($offset)
     {
         // TODO: Implement offsetExists() method.
         return isset($this->items[$offset]);
+    }
+
+    public function has($offset)
+    {
+        return $this->offsetExists($offset);
     }
 
 }
