@@ -5,6 +5,15 @@ use ArrayAccess;
 class Container implements ArrayAccess
 {
     protected $items = [];
+    protected $cache = [];
+
+    public function __construct(array $items = [])
+    {
+        foreach ($items as $key => $item) {
+            $this->offsetSet($key, $item);
+        }
+    }
+
     public function offsetSet($offset, $value)
     {
         // TODO: Implement offsetSet() method.
@@ -18,7 +27,13 @@ class Container implements ArrayAccess
             return null;
         }
 
-        $item = $this->items[$offset]();
+        $item = $this->items[$offset]($this);
+
+        if (isset($this->cache[$offset])) {
+            return $this->cache[$offset];
+        }
+
+        $this->cache[$offset] = $item;
 
         return $item;
     }
@@ -42,4 +57,9 @@ class Container implements ArrayAccess
         return $this->offsetExists($offset);
     }
 
+    public function __get($property)
+    {
+        // TODO: Implement __get() method.
+        return $this->offsetGet($property);
+    }
 }
